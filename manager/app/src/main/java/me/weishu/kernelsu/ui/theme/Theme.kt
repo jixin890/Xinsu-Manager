@@ -134,6 +134,8 @@ val LocalColorMode = staticCompositionLocalOf { 0 }
 
 val LocalEnableBlur = staticCompositionLocalOf { false }
 
+val LocalWallpaperSettings = staticCompositionLocalOf { WallpaperSettings() }
+
 val LocalEnableFloatingBottomBar = staticCompositionLocalOf { false }
 
 val LocalEnableFloatingBottomBarBlur = staticCompositionLocalOf { false }

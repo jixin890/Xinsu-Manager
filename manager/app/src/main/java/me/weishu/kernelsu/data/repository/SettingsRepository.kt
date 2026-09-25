@@ -15,6 +15,14 @@ interface SettingsRepository {
     var enableFloatingBottomBarBlur: Boolean
     var enableNavigationBadge: Boolean
     var pageScale: Float
+    var wallpaperEnabled: Boolean
+    var wallpaperPath: String?
+    var wallpaperBlur: Float
+    var wallpaperDim: Float
+    var wallpaperApplyHome: Boolean
+    var wallpaperApplyModule: Boolean
+    var wallpaperApplySettings: Boolean
+    var moduleCardWallpaperEnabled: Boolean
     var enableWebDebugging: Boolean
     var moduleSortEnabledFirst: Boolean
     var moduleSortActionFirst: Boolean

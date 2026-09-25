@@ -28,6 +28,7 @@ import androidx.compose.material.icons.filled.RemoveCircle
 import androidx.compose.material.icons.filled.RemoveModerator
 import androidx.compose.material.icons.filled.RestartAlt
 import androidx.compose.material.icons.filled.Update
+import androidx.compose.material.icons.filled.Wallpaper
 import androidx.compose.material.icons.rounded.Dashboard
 import androidx.compose.material.icons.rounded.UploadFile
 import androidx.compose.material3.Icon
@@ -139,6 +140,20 @@ fun SettingPagerMaterial(
                             headlineContent = { Text(stringResource(id = R.string.settings_theme)) },
                             supportingContent = { Text(stringResource(id = R.string.settings_theme_summary)) },
                             leadingContent = { Icon(Icons.Filled.Palette, stringResource(id = R.string.settings_theme)) },
+                            trailingContent = {
+                                Icon(
+                                    Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                                    null
+                                )
+                            }
+                        )
+                    }
+                    add {
+                        SegmentedListItem(
+                            onClick = actions.onOpenWallpaperSettings,
+                            headlineContent = { Text(stringResource(id = R.string.wallpaper_settings)) },
+                            supportingContent = { Text(stringResource(id = R.string.wallpaper_settings_summary)) },
+                            leadingContent = { Icon(Icons.Filled.Wallpaper, stringResource(id = R.string.wallpaper_settings)) },
                             trailingContent = {
                                 Icon(
                                     Icons.AutoMirrored.Filled.KeyboardArrowRight,

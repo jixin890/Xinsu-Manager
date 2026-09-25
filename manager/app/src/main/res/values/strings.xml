@@ -87,7 +87,7 @@
     <string name="home_learn_kernelsu_url">https://kernelsu.org/guide/what-is-kernelsu.html</string>
     <string name="home_click_to_learn_kernelsu">Learn how to install KernelSU and use modules.</string>
     <string name="home_support_title">Support Us</string>
-    <string name="home_support_content">Xinsu is a third-party manager based on the free and open-source KernelSU project.</string>
+    <string name="home_support_content">XinSu is a third-party manager based on the free and open-source KernelSU project.</string>
     <string name="home_gki_warning">Starting from v3.0.0, the GKI work mode will be used only in testing environments. We do not recommend it for daily use, and image files will no longer be provided.</string>
     <string name="about_source_code"><![CDATA[View source code at %1$s<br/>Join our %2$s channel]]></string>
     <string name="profile" translatable="false">App Profile</string>
@@ -245,6 +245,24 @@
     <string name="color_amber">Amber</string>
     <string name="color_blue_grey">Blue Grey</string>
     <string name="color_sakura">Sakura</string>
+    <string name="wallpaper_settings">Wallpaper</string>
+    <string name="wallpaper_settings_summary">Custom wallpaper, blur and module card background.</string>
+    <string name="wallpaper_preview">Wallpaper preview</string>
+    <string name="wallpaper_enable">Enable wallpaper</string>
+    <string name="wallpaper_enable_summary">Show custom wallpaper in selected pages.</string>
+    <string name="wallpaper_select_image">Select image</string>
+    <string name="wallpaper_select_image_summary">Pick an image from your gallery.</string>
+    <string name="wallpaper_use_image">Wallpaper selected</string>
+    <string name="wallpaper_clear_image">Remove wallpaper</string>
+    <string name="wallpaper_blur_strength">Blur</string>
+    <string name="wallpaper_darkening">Darkening</string>
+    <string name="wallpaper_apply_to">Apply to pages</string>
+    <string name="wallpaper_apply_home">Home page</string>
+    <string name="wallpaper_apply_module">Module page</string>
+    <string name="wallpaper_apply_settings">Settings page</string>
+    <string name="wallpaper_module_card">Module cards</string>
+    <string name="wallpaper_module_card_enable">Module card wallpaper</string>
+    <string name="wallpaper_module_card_enable_summary">Apply blurred wallpaper to module cards.</string>
     <string name="network_offline">Not connected to network</string>
     <string name="network_retry">Retry</string>
     <string name="tab_readme">README</string>

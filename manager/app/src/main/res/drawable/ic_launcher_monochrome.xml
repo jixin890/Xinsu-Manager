@@ -5,11 +5,11 @@
     android:viewportWidth="108"
     android:viewportHeight="108">
 
-    <!-- 单色图标：系统按主题自动着色 -->
+    <!-- 单色图标：系统按主题自动着色（与前景一致的 K 造型 + 星芒） -->
     <path
         android:fillColor="#000000"
-        android:strokeColor="#000000"
-        android:strokeWidth="3"
-        android:strokeLineJoin="round"
-        android:pathData="M62,23 L36,55 L49,55 L42,85 L70,44 L56,44 Z" />
+        android:pathData="M37.6,33.7 L48.5,34.5 L46.2,75.1 L35.3,74.3 Z
+            M47.0,41.5 L75.1,31.4 L78.2,42.3 L50.1,52.4 Z
+            M47.0,55.6 L75.1,65.7 L71.9,76.6 L43.9,66.5 Z
+            M74.3,54.0 L76.2,61.4 L83.6,63.4 L76.2,65.3 L74.3,72.7 L72.3,65.3 L64.9,63.4 L72.3,61.4 Z" />
 </vector>

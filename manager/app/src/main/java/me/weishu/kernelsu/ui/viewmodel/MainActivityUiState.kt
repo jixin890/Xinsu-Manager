@@ -3,6 +3,7 @@ package me.weishu.kernelsu.ui.viewmodel
 import androidx.compose.runtime.Immutable
 import me.weishu.kernelsu.ui.UiMode
 import me.weishu.kernelsu.ui.theme.AppSettings
+import me.weishu.kernelsu.ui.theme.WallpaperSettings
 
 @Immutable
 data class MainActivityUiState(
@@ -13,4 +14,5 @@ data class MainActivityUiState(
     val enableFloatingBottomBarBlur: Boolean,
     val enableNavigationBadge: Boolean,
     val uiMode: UiMode,
+    val wallpaper: WallpaperSettings = WallpaperSettings(),
 )

@@ -146,6 +146,7 @@ import me.weishu.kernelsu.ui.component.material.SnackBarHost
 import me.weishu.kernelsu.ui.component.material.TonalCard
 import me.weishu.kernelsu.ui.component.rebootlistpopup.RebootListPopup
 import me.weishu.kernelsu.ui.component.statustag.StatusTag
+import me.weishu.kernelsu.ui.theme.LocalWallpaperSettings
 import me.weishu.kernelsu.ui.util.reboot
 
 @SuppressLint("StringFormatInvalid")
@@ -162,6 +163,11 @@ fun ModulePagerMaterial(
 
     val context = LocalContext.current
     val resource = LocalResources.current
+    val wallpaper = LocalWallpaperSettings.current
+    val wallpaperVisible =
+        wallpaper.enabled && !wallpaper.path.isNullOrBlank() && wallpaper.appliedToPage(2)
+    val cardWallpaperPath =
+        if (wallpaper.enabled && wallpaper.moduleCardEnabled && wallpaper.applyModule) wallpaper.path else null
 
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
 
@@ -274,6 +280,7 @@ fun ModulePagerMaterial(
     }
 
     ExpressiveScaffold(
+        containerColor = if (wallpaperVisible) Color.Transparent else MaterialTheme.colorScheme.surfaceContainer,
         topBar = {
             SearchAppBar(
                 title = { Text(stringResource(R.string.module)) },
@@ -365,6 +372,7 @@ fun ModulePagerMaterial(
                         },
                         onModuleAddShortcut = { module, type -> onModuleAddShortcut(module, type) },
                         closeSearch = closeSearch,
+                        cardWallpaperPath = cardWallpaperPath,
                     )
                 }
             )
@@ -474,6 +482,7 @@ fun ModulePagerMaterial(
                     }
                 },
                 onModuleAddShortcut = { module, type -> onModuleAddShortcut(module, type) },
+                cardWallpaperPath = cardWallpaperPath,
             )
         }
     }
@@ -505,6 +514,7 @@ private fun ModuleList(
     onClickModule: (Module) -> Unit,
     onModuleAddShortcut: (Module, ShortcutType) -> Unit,
     closeSearch: () -> Unit? = {},
+    cardWallpaperPath: String? = null,
 ) {
     val loadingDialog = rememberLoadingDialog()
     LazyColumn(
@@ -544,7 +554,8 @@ private fun ModuleList(
                 onAddShortcut = { type -> onModuleAddShortcut(module, type) },
                 onClick = { onClickModule(module) },
                 onExecuteAction = { actions.onExecuteModuleAction(module) },
-                closeSearch = { closeSearch() }
+                closeSearch = { closeSearch() },
+                cardWallpaperPath = cardWallpaperPath,
             )
         }
     }
@@ -715,10 +726,17 @@ private fun ModuleItem(
     onAddShortcut: (ShortcutType) -> Unit,
     onClick: () -> Unit,
     onExecuteAction: () -> Unit,
-    closeSearch: () -> Unit
+    closeSearch: () -> Unit,
+    cardWallpaperPath: String? = null,
 ) {
+    val cardWallpaper = cardWallpaperPath?.takeIf { it.isNotBlank() }
     TonalCard(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
+        containerColor = if (cardWallpaper != null) {
+            MaterialTheme.colorScheme.surface.copy(alpha = 0.88f)
+        } else {
+            MaterialTheme.colorScheme.surfaceBright
+        }
     ) {
         val haptic = LocalHapticFeedback.current
         val textDecoration = if (!module.remove) null else TextDecoration.LineThrough

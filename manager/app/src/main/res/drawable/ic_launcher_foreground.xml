@@ -1,30 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
     android:width="108dp"
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
 
-    <!-- Xinsu 图标：粗体闪电 + 立体投影 + 星芒点缀（均位于自适应图标安全区内） -->
+    <!--
+      XinSu 图标：沿用 KernelSU 同款 "K" 几何造型（三段平行四边形），
+      叠加右下错位投影营造立体感，并以红橙色星芒作为 XinSu 的专属点缀。
+      所有图形均收在自适应图标安全圆（半径 33，圆心 54,54）内，避免被圆形遮罩裁切。
+    -->
 
-    <!-- 后方投影（错位 +2,+2，营造立体感） -->
+    <!-- 后方投影（错位 +1.6，形成厚度感） -->
     <path
         android:fillColor="@color/ic_launcher_echo"
-        android:strokeColor="@color/ic_launcher_echo"
-        android:strokeWidth="3"
-        android:strokeLineJoin="round"
-        android:pathData="M64,25 L38,57 L51,57 L44,83 L72,46 L58,46 Z" />
+        android:pathData="M39.2,35.3 L50.1,36.1 L47.8,76.7 L36.9,75.9 Z
+            M48.6,43.1 L76.7,33.0 L79.8,43.9 L51.7,54.0 Z
+            M48.6,57.2 L76.7,67.3 L73.5,78.2 L45.5,68.1 Z" />
 
-    <!-- 主闪电 -->
+    <!-- 主 "K" 造型，白色到淡靛蓝渐变 -->
     <path
-        android:fillColor="@color/ic_launcher_foreground"
-        android:strokeColor="@color/ic_launcher_foreground"
-        android:strokeWidth="3"
-        android:strokeLineJoin="round"
-        android:pathData="M62,23 L36,55 L49,55 L42,85 L70,44 L56,44 Z" />
+        android:pathData="M37.6,33.7 L48.5,34.5 L46.2,75.1 L35.3,74.3 Z
+            M47.0,41.5 L75.1,31.4 L78.2,42.3 L50.1,52.4 Z
+            M47.0,55.6 L75.1,65.7 L71.9,76.6 L43.9,66.5 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="linear"
+                android:startX="44"
+                android:startY="30"
+                android:endX="70"
+                android:endY="78">
+                <item android:offset="0" android:color="#FFFFFFFF" />
+                <item android:offset="0.55" android:color="#FFE0E7FF" />
+                <item android:offset="1" android:color="#FFA5B4FC" />
+            </gradient>
+        </aapt:attr>
+    </path>
 
-    <!-- 右下星芒点缀 -->
+    <!-- 右下红橙星芒点缀（XinSu 专属标识） -->
     <path
-        android:fillColor="@color/ic_launcher_spark"
-        android:pathData="M77,63 L79.5,68.5 L85,71 L79.5,73.5 L77,79 L74.5,73.5 L69,71 L74.5,68.5 Z" />
+        android:pathData="M74.3,54.0 L76.2,61.4 L83.6,63.4 L76.2,65.3 L74.3,72.7 L72.3,65.3 L64.9,63.4 L72.3,61.4 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="linear"
+                android:startX="70"
+                android:startY="54"
+                android:endX="82"
+                android:endY="73">
+                <item android:offset="0" android:color="#FFFF8A65" />
+                <item android:offset="1" android:color="#FFD7263E" />
+            </gradient>
+        </aapt:attr>
+    </path>
 </vector>

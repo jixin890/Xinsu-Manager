@@ -12,6 +12,7 @@ import me.weishu.kernelsu.data.repository.SettingsRepositoryImpl
 import me.weishu.kernelsu.ksuApp
 import me.weishu.kernelsu.ui.UiMode
 import me.weishu.kernelsu.ui.theme.ThemeController
+import me.weishu.kernelsu.ui.theme.WallpaperController
 
 class MainActivityViewModel(
     savedStateHandle: SavedStateHandle,
@@ -51,6 +52,7 @@ class MainActivityViewModel(
             enableFloatingBottomBarBlur = settingRepo.enableFloatingBottomBarBlur,
             enableNavigationBadge = settingRepo.enableNavigationBadge,
             uiMode = UiMode.fromValue(settingRepo.uiMode),
+            wallpaper = WallpaperController.getWallpaperSettings(settingRepo),
         )
     }
 
@@ -66,6 +68,14 @@ class MainActivityViewModel(
             "enable_floating_bottom_bar_blur",
             "enable_navigation_badge",
             "ui_mode",
+            "wallpaper_enabled",
+            "wallpaper_path",
+            "wallpaper_blur",
+            "wallpaper_dim",
+            "wallpaper_apply_home",
+            "wallpaper_apply_module",
+            "wallpaper_apply_settings",
+            "module_card_wallpaper_enabled",
         )
     }
 }

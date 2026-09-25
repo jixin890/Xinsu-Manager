@@ -32,6 +32,7 @@ import androidx.compose.material.icons.rounded.RemoveModerator
 import androidx.compose.material.icons.rounded.RestartAlt
 import androidx.compose.material.icons.rounded.Update
 import androidx.compose.material.icons.rounded.UploadFile
+import androidx.compose.material.icons.rounded.Wallpaper
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -48,8 +49,10 @@ import me.weishu.kernelsu.ui.component.dialog.rememberLoadingDialog
 import me.weishu.kernelsu.ui.component.miuix.SendLogDialog
 import me.weishu.kernelsu.ui.component.uninstalldialog.UninstallDialog
 import me.weishu.kernelsu.ui.theme.LocalEnableBlur
+import me.weishu.kernelsu.ui.theme.LocalWallpaperSettings
 import me.weishu.kernelsu.ui.util.BlurredBar
 import me.weishu.kernelsu.ui.util.rememberBlurBackdrop
+import me.weishu.kernelsu.ui.util.rememberPageBackdrop
 import top.yukonga.miuix.kmp.basic.Card
 import top.yukonga.miuix.kmp.basic.Icon
 import top.yukonga.miuix.kmp.basic.MiuixScrollBehavior
@@ -75,7 +78,10 @@ fun SettingPagerMiuix(
 ) {
     val scrollBehavior = MiuixScrollBehavior()
     val enableBlur = LocalEnableBlur.current
-    val backdrop = rememberBlurBackdrop(enableBlur)
+    val wallpaper = LocalWallpaperSettings.current
+    val wallpaperVisible =
+        wallpaper.enabled && !wallpaper.path.isNullOrBlank() && wallpaper.appliedToPage(3)
+    val backdrop = rememberPageBackdrop(enableBlur, wallpaperVisible)
     val blurActive = backdrop != null
     val barColor = if (blurActive) Color.Transparent else colorScheme.surface
     val loadingDialog = rememberLoadingDialog()
@@ -83,6 +89,7 @@ fun SettingPagerMiuix(
     val showSendLogDialog = rememberSaveable { mutableStateOf(false) }
 
     Scaffold(
+        containerColor = if (wallpaperVisible) Color.Transparent else colorScheme.surface,
         topBar = {
             BlurredBar(backdrop) {
                 TopAppBar(
@@ -176,6 +183,19 @@ fun SettingPagerMiuix(
                                 )
                             },
                             onClick = actions.onOpenTheme
+                        )
+                        ArrowPreference(
+                            title = stringResource(id = R.string.wallpaper_settings),
+                            summary = stringResource(id = R.string.wallpaper_settings_summary),
+                            startAction = {
+                                Icon(
+                                    Icons.Rounded.Wallpaper,
+                                    modifier = Modifier.padding(end = 6.dp),
+                                    contentDescription = stringResource(id = R.string.wallpaper_settings),
+                                    tint = colorScheme.onBackground
+                                )
+                            },
+                            onClick = actions.onOpenWallpaperSettings
                         )
                     }
 

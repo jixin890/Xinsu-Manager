@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.displayCutout
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.systemBars
@@ -35,6 +36,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
@@ -59,6 +61,7 @@ import me.weishu.kernelsu.ui.component.bottombar.NavigationBadgeState
 import me.weishu.kernelsu.ui.component.bottombar.SideRail
 import me.weishu.kernelsu.ui.component.bottombar.rememberMainPagerState
 import me.weishu.kernelsu.ui.component.bottombar.useNavigationRail
+import me.weishu.kernelsu.ui.component.wallpaper.WallpaperBackground
 import me.weishu.kernelsu.ui.navigation3.IntentDispatcher
 import me.weishu.kernelsu.ui.navigation3.LocalNavigator
 import me.weishu.kernelsu.ui.navigation3.Navigator
@@ -77,6 +80,8 @@ import me.weishu.kernelsu.ui.screen.modulerepo.ModuleRepoScreen
 import me.weishu.kernelsu.ui.screen.settings.SettingPager
 import me.weishu.kernelsu.ui.screen.sulog.SulogScreen
 import me.weishu.kernelsu.ui.screen.superuser.SuperUserPager
+import me.weishu.kernelsu.ui.screen.wallpaper.WallpaperSettingsScreen
+import me.weishu.kernelsu.ui.theme.LocalWallpaperSettings
 import me.weishu.kernelsu.ui.screen.template.AppProfileTemplateScreen
 import me.weishu.kernelsu.ui.screen.templateeditor.TemplateEditorScreen
 import me.weishu.kernelsu.ui.theme.KernelSUTheme
@@ -89,6 +94,7 @@ import me.weishu.kernelsu.ui.util.getSuperuserCount
 import me.weishu.kernelsu.ui.util.install
 import me.weishu.kernelsu.ui.util.rememberBlurBackdrop
 import me.weishu.kernelsu.ui.util.rememberContentReady
+import me.weishu.kernelsu.ui.util.rememberPageBackdrop
 import me.weishu.kernelsu.ui.util.rootAvailable
 import me.weishu.kernelsu.ui.viewmodel.MainActivityViewModel
 import me.weishu.kernelsu.ui.viewmodel.MainPagerConfig
@@ -145,6 +151,7 @@ class MainActivity : ComponentActivity() {
                 LocalDensity provides density,
                 LocalColorMode provides appSettings.colorMode.value,
                 LocalEnableBlur provides uiState.enableBlur,
+                LocalWallpaperSettings provides uiState.wallpaper,
                 LocalEnableFloatingBottomBar provides uiState.enableFloatingBottomBar,
                 LocalEnableFloatingBottomBarBlur provides uiState.enableFloatingBottomBarBlur,
                 LocalEnableNavigationBadge provides uiState.enableNavigationBadge,
@@ -184,6 +191,7 @@ class MainActivity : ComponentActivity() {
                                 entry<Route.About> { AboutScreen() }
                                 entry<Route.Sulog> { SulogScreen() }
                                 entry<Route.ColorPalette> { ColorPaletteScreen() }
+                                entry<Route.WallpaperSettings> { WallpaperSettingsScreen() }
                                 entry<Route.AppProfileTemplate> { AppProfileTemplateScreen() }
                                 entry<Route.TemplateEditor> { key -> TemplateEditorScreen(key.template, key.readOnly) }
                                 entry<Route.AppProfile> { key -> AppProfileScreen(key.uid) }
@@ -277,7 +285,12 @@ fun MainScreen(
         UiMode.Material -> MaterialTheme.colorScheme.surface // Blur is not used in Material, this is just a placeholder
         UiMode.Miuix -> MiuixTheme.colorScheme.surface
     }
-    val blurBackdrop = rememberBlurBackdrop(enableBlur)
+
+    // 自定义壁纸：仅在启用且当前页允许时透出
+    val wallpaper = LocalWallpaperSettings.current
+    val wallpaperVisible =
+        wallpaper.enabled && !wallpaper.path.isNullOrBlank() && wallpaper.appliedToPage(mainPagerState.pagerState.currentPage)
+    val blurBackdrop = rememberPageBackdrop(enableBlur, wallpaperVisible)
 
     val backdrop = rememberLayerBackdrop {
         drawRect(surfaceColor)
@@ -298,7 +311,14 @@ fun MainScreen(
 
     val useNavigationRail = useNavigationRail(enableFloatingBottomBar)
 
-    CompositionLocalProvider(
+    Box {
+        // 自定义壁纸绘制在页面内容之下
+        WallpaperBackground(
+            wallpaper = wallpaper,
+            currentPage = mainPagerState.pagerState.currentPage,
+            modifier = Modifier.fillMaxSize(),
+        )
+        CompositionLocalProvider(
         LocalMainPagerState provides mainPagerState
     ) {
         val contentReady = rememberContentReady()
@@ -330,7 +350,7 @@ fun MainScreen(
 
             when (uiMode) {
                 UiMode.Material -> androidx.compose.material3.Scaffold(
-                    containerColor = MaterialTheme.colorScheme.surfaceContainer
+                    containerColor = if (wallpaperVisible) Color.Transparent else MaterialTheme.colorScheme.surfaceContainer
                 ) {
                     Row {
                         SideRail(navigationBadge)
@@ -344,7 +364,9 @@ fun MainScreen(
                     }
                 }
 
-                UiMode.Miuix -> Scaffold { _ ->
+                UiMode.Miuix -> Scaffold(
+                    containerColor = if (wallpaperVisible) Color.Transparent else MiuixTheme.colorScheme.surface
+                ) { _ ->
                     Row {
                         SideRail(navigationBadge)
                         Box(
@@ -374,16 +396,20 @@ fun MainScreen(
             when (uiMode) {
                 UiMode.Material -> androidx.compose.material3.Scaffold(
                     bottomBar = bottomBar,
-                    containerColor = MaterialTheme.colorScheme.surfaceContainer
+                    containerColor = if (wallpaperVisible) Color.Transparent else MaterialTheme.colorScheme.surfaceContainer
                 ) { innerPadding ->
                     pagerContent(innerPadding.calculateBottomPadding())
                 }
 
-                UiMode.Miuix -> Scaffold(bottomBar = bottomBar) { innerPadding ->
+                UiMode.Miuix -> Scaffold(
+                    bottomBar = bottomBar,
+                    containerColor = if (wallpaperVisible) Color.Transparent else MiuixTheme.colorScheme.surface
+                ) { innerPadding ->
                     pagerContent(innerPadding.calculateBottomPadding())
                 }
             }
         }
+    }
     }
 }
 

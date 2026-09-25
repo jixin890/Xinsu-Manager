@@ -68,7 +68,7 @@
     <string name="home_learn_kernelsu_url">https://kernelsu.org/zh_CN/guide/what-is-kernelsu.html</string>
     <string name="home_click_to_learn_kernelsu">了解如何安装 KernelSU 以及如何开发模块</string>
     <string name="home_support_title">支持开发</string>
-    <string name="home_support_content">Xinsu 是基于免费开源的 KernelSU 项目的第三方管理器</string>
+    <string name="home_support_content">XinSu 是基于免费开源的 KernelSU 项目的第三方管理器</string>
     <string name="home_gki_warning">自 v3.0.0 起 GKI 工作模式将仅用于测试环境，我们不建议用于日常使用，也不再提供镜像文件</string>
     <string name="about_source_code"><![CDATA[在 %1$s 查看源码<br/>加入我们的 %2$s 频道<br/>加入我们的 <b><a href="https://pd.qq.com/s/8lipl1brp">QQ</a></b> 频道]]></string>
     <string name="profile_default">默认</string>
@@ -300,4 +300,22 @@
     <string name="nav_rail_collapse">收起导航栏</string>
     <string name="settings_navigation_badge">导航栏角标</string>
     <string name="settings_navigation_badge_summary">在导航栏显示已授权应用和已启用模块数量</string>
+    <string name="wallpaper_settings">自定义壁纸</string>
+    <string name="wallpaper_settings_summary">自定义壁纸、模糊程度与模块卡片背景</string>
+    <string name="wallpaper_preview">壁纸预览</string>
+    <string name="wallpaper_enable">启用壁纸</string>
+    <string name="wallpaper_enable_summary">在选定页面显示自定义壁纸</string>
+    <string name="wallpaper_select_image">选择图片</string>
+    <string name="wallpaper_select_image_summary">从相册中选择一张图片</string>
+    <string name="wallpaper_use_image">已选择壁纸</string>
+    <string name="wallpaper_clear_image">移除壁纸</string>
+    <string name="wallpaper_blur_strength">模糊程度</string>
+    <string name="wallpaper_darkening">暗化程度</string>
+    <string name="wallpaper_apply_to">应用页面</string>
+    <string name="wallpaper_apply_home">主页</string>
+    <string name="wallpaper_apply_module">模块页</string>
+    <string name="wallpaper_apply_settings">设置页</string>
+    <string name="wallpaper_module_card">模块卡片</string>
+    <string name="wallpaper_module_card_enable">模块卡片壁纸</string>
+    <string name="wallpaper_module_card_enable_summary">将模糊后的壁纸应用到模块卡片背景</string>
 </resources>

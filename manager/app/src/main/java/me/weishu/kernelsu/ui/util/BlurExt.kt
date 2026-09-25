@@ -22,6 +22,20 @@ fun rememberBlurBackdrop(enableBlur: Boolean): LayerBackdrop? {
     }
 }
 
+/**
+ * 页面级模糊底板：壁纸启用时底板保持透明，使壁纸透出；
+ * 否则与 [rememberBlurBackdrop] 一致绘制不透明 surface。
+ */
+@Composable
+fun rememberPageBackdrop(enableBlur: Boolean, wallpaperVisible: Boolean): LayerBackdrop? {
+    if (!enableBlur || !isRenderEffectSupported()) return null
+    val surfaceColor = MiuixTheme.colorScheme.surface
+    return rememberLayerBackdrop {
+        if (!wallpaperVisible) drawRect(surfaceColor)
+        drawContent()
+    }
+}
+
 @Composable
 fun BlurredBar(
     backdrop: LayerBackdrop?,

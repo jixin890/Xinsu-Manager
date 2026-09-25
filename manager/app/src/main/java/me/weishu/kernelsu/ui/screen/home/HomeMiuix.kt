@@ -51,10 +51,12 @@ import me.weishu.kernelsu.ui.component.dialog.rememberConfirmDialog
 import me.weishu.kernelsu.ui.component.miuix.WarningCard
 import me.weishu.kernelsu.ui.component.rebootlistpopup.RebootListPopupMiuix
 import me.weishu.kernelsu.ui.theme.LocalEnableBlur
+import me.weishu.kernelsu.ui.theme.LocalWallpaperSettings
 import me.weishu.kernelsu.ui.theme.isInDarkTheme
 import me.weishu.kernelsu.ui.util.BlurredBar
 import me.weishu.kernelsu.ui.util.module.LatestVersionInfo
 import me.weishu.kernelsu.ui.util.rememberBlurBackdrop
+import me.weishu.kernelsu.ui.util.rememberPageBackdrop
 import top.yukonga.miuix.kmp.basic.BasicComponent
 import top.yukonga.miuix.kmp.basic.ButtonDefaults
 import top.yukonga.miuix.kmp.basic.Card
@@ -85,10 +87,14 @@ fun HomePagerMiuix(
 ) {
     val scrollBehavior = MiuixScrollBehavior()
     val enableBlur = LocalEnableBlur.current
-    val backdrop = rememberBlurBackdrop(enableBlur)
+    val wallpaper = LocalWallpaperSettings.current
+    val wallpaperVisible =
+        wallpaper.enabled && !wallpaper.path.isNullOrBlank() && wallpaper.appliedToPage(0)
+    val backdrop = rememberPageBackdrop(enableBlur, wallpaperVisible)
     val blurActive = backdrop != null
     val barColor = if (blurActive) Color.Transparent else colorScheme.surface
     Scaffold(
+        containerColor = if (wallpaperVisible) Color.Transparent else colorScheme.surface,
         topBar = {
             TopBar(
                 scrollBehavior = scrollBehavior,

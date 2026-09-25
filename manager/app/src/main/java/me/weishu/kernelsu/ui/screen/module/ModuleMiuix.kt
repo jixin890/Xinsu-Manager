@@ -122,14 +122,18 @@ import me.weishu.kernelsu.ui.component.miuix.SearchBarFake
 import me.weishu.kernelsu.ui.component.miuix.SearchBox
 import me.weishu.kernelsu.ui.component.miuix.SearchPager
 import me.weishu.kernelsu.ui.component.rebootlistpopup.RebootListPopupMiuix
+import me.weishu.kernelsu.ui.component.wallpaper.WallpaperLayer
 import me.weishu.kernelsu.ui.theme.LocalEnableBlur
+import me.weishu.kernelsu.ui.theme.LocalWallpaperSettings
 import me.weishu.kernelsu.ui.theme.isInDarkTheme
 import me.weishu.kernelsu.ui.util.BlurredBar
 import me.weishu.kernelsu.ui.util.getFileName
 import me.weishu.kernelsu.ui.util.reboot
 import me.weishu.kernelsu.ui.util.rememberBlurBackdrop
+import me.weishu.kernelsu.ui.util.rememberPageBackdrop
 import top.yukonga.miuix.kmp.basic.ButtonDefaults
 import top.yukonga.miuix.kmp.basic.Card
+import top.yukonga.miuix.kmp.basic.CardDefaults
 import top.yukonga.miuix.kmp.basic.DropdownImpl
 import top.yukonga.miuix.kmp.basic.FloatingActionButton
 import top.yukonga.miuix.kmp.basic.HorizontalDivider
@@ -179,6 +183,11 @@ fun ModulePagerMiuix(
     val snackbarHostState = remember { SnackbarHostState() }
     val density = LocalDensity.current
     val enableBlur = LocalEnableBlur.current
+    val wallpaper = LocalWallpaperSettings.current
+    val wallpaperVisible =
+        wallpaper.enabled && !wallpaper.path.isNullOrBlank() && wallpaper.appliedToPage(2)
+    val cardWallpaperPath =
+        if (wallpaper.enabled && wallpaper.moduleCardEnabled && wallpaper.applyModule) wallpaper.path else null
 
     val installPromptWithName = stringResource(R.string.module_install_prompt_with_name, "%s")
     val confirmDialog = rememberConfirmDialog(
@@ -297,11 +306,12 @@ fun ModulePagerMiuix(
         animationSpec = tween(durationMillis = 350)
     )
 
-    val backdrop = rememberBlurBackdrop(enableBlur)
+    val backdrop = rememberPageBackdrop(enableBlur, wallpaperVisible)
     val blurActive = backdrop != null
     val barColor = if (blurActive) Color.Transparent else colorScheme.surface
 
     Scaffold(
+        containerColor = if (wallpaperVisible) Color.Transparent else colorScheme.surface,
         topBar = {
             BlurredBar(backdrop) {
                 searchStatus.TopAppBarAnim(backgroundColor = barColor) {
@@ -488,6 +498,7 @@ fun ModulePagerMiuix(
                         end = 0.dp,
                         bottom = maxOf(bottomInnerPadding, imeBottomPadding),
                     ),
+                    cardWallpaperPath = cardWallpaperPath,
                 )
             }
         },
@@ -591,6 +602,7 @@ fun ModulePagerMiuix(
                             },
                             contentPadding = contentPadding,
                             listState = listState,
+                            cardWallpaperPath = cardWallpaperPath,
                         )
                     }
                 }
@@ -744,6 +756,7 @@ private fun ModuleList(
     onModuleAddShortcut: (Module, ShortcutType) -> Unit,
     contentPadding: PaddingValues,
     listState: LazyListState = rememberLazyListState(),
+    cardWallpaperPath: String? = null,
 ) {
     val loadingDialog = rememberLoadingDialog()
     val scope = rememberCoroutineScope()
@@ -796,7 +809,8 @@ private fun ModuleList(
                         if (module.hasWebUi) {
                             actions.onOpenWebUi(module)
                         }
-                    }
+                    },
+                    cardWallpaperPath = cardWallpaperPath,
                 )
             }
 
@@ -816,7 +830,8 @@ fun ModuleItem(
     onUpdate: () -> Unit,
     onExecuteAction: () -> Unit,
     onAddActionShortcut: (ShortcutType) -> Unit,
-    onOpenWebUi: () -> Unit
+    onOpenWebUi: () -> Unit,
+    cardWallpaperPath: String? = null,
 ) {
     val secondaryContainer = colorScheme.secondaryContainer.copy(alpha = 0.8f)
     val actionIconTint = colorScheme.onSurface.copy(alpha = if (isInDarkTheme()) 0.7f else 0.9f)
@@ -826,25 +841,45 @@ fun ModuleItem(
     val textDecoration = if (module.remove) TextDecoration.LineThrough else null
     val hasDescription = module.description.isNotBlank()
     var expanded by rememberSaveable(module.id) { mutableStateOf(false) }
-
-    Card(
-        modifier = Modifier
-            .padding(horizontal = 12.dp)
-            .padding(bottom = 12.dp),
-        insideMargin = PaddingValues(16.dp),
-        onClick = {
-            if (hasDescription) expanded = !expanded
+    val cardWallpaper = cardWallpaperPath?.takeIf { it.isNotBlank() }
+    val cardColor = if (cardWallpaper != null) {
+        CardDefaults.defaultColors(color = colorScheme.surface.copy(alpha = 0.88f))
+    } else {
+        CardDefaults.defaultColors()
+    }
+    val cardModifier = Modifier
+        .padding(horizontal = 12.dp)
+        .padding(bottom = 12.dp)
+        .run {
+            if (cardWallpaper != null) clip(RoundedCornerShape(18.dp)) else this
         }
-    ) {
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalAlignment = Alignment.CenterVertically,
+
+    Box(modifier = cardModifier) {
+        if (cardWallpaper != null) {
+            WallpaperLayer(
+                path = cardWallpaper,
+                blur = 12f,
+                dim = 0.25f,
+                modifier = Modifier.matchParentSize(),
+            )
+        }
+        Card(
+            modifier = Modifier.matchParentSize(),
+            colors = cardColor,
+            insideMargin = PaddingValues(16.dp),
+            onClick = {
+                if (hasDescription) expanded = !expanded
+            }
         ) {
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(end = 4.dp)
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(end = 4.dp)
+                ) {
                 val moduleVersion = stringResource(id = R.string.module_version)
                 val moduleAuthor = stringResource(id = R.string.module_author)
 
@@ -1106,5 +1141,6 @@ fun ModuleItem(
                 }
             }
         }
+    }
     }
 }

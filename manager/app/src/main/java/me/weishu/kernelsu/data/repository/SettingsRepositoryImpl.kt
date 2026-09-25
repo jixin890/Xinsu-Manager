@@ -93,6 +93,38 @@ class SettingsRepositoryImpl : SettingsRepository {
         get() = prefs.getFloat("page_scale", 1.0f)
         set(value) = prefs.edit { putFloat("page_scale", value) }
 
+    override var wallpaperEnabled: Boolean
+        get() = prefs.getBoolean("wallpaper_enabled", false)
+        set(value) = prefs.edit { putBoolean("wallpaper_enabled", value) }
+
+    override var wallpaperPath: String?
+        get() = prefs.getString("wallpaper_path", null)
+        set(value) = prefs.edit { putString("wallpaper_path", value) }
+
+    override var wallpaperBlur: Float
+        get() = prefs.getFloat("wallpaper_blur", 12f)
+        set(value) = prefs.edit { putFloat("wallpaper_blur", value) }
+
+    override var wallpaperDim: Float
+        get() = prefs.getFloat("wallpaper_dim", 0.3f)
+        set(value) = prefs.edit { putFloat("wallpaper_dim", value) }
+
+    override var wallpaperApplyHome: Boolean
+        get() = prefs.getBoolean("wallpaper_apply_home", true)
+        set(value) = prefs.edit { putBoolean("wallpaper_apply_home", value) }
+
+    override var wallpaperApplyModule: Boolean
+        get() = prefs.getBoolean("wallpaper_apply_module", true)
+        set(value) = prefs.edit { putBoolean("wallpaper_apply_module", value) }
+
+    override var wallpaperApplySettings: Boolean
+        get() = prefs.getBoolean("wallpaper_apply_settings", true)
+        set(value) = prefs.edit { putBoolean("wallpaper_apply_settings", value) }
+
+    override var moduleCardWallpaperEnabled: Boolean
+        get() = prefs.getBoolean("module_card_wallpaper_enabled", false)
+        set(value) = prefs.edit { putBoolean("module_card_wallpaper_enabled", value) }
+
     override var enableWebDebugging: Boolean
         get() = prefs.getBoolean("enable_web_debugging", false)
         set(value) = prefs.edit { putBoolean("enable_web_debugging", value) }

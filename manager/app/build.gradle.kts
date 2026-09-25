@@ -24,7 +24,7 @@ val managerVersionName = rootProject.extra["managerVersionName"] as String
 
 val isPrBuild = project.findProperty("IS_PR_BUILD")?.toString()?.toBoolean() ?: false
 val defaultManagerPackageName = if (isPrBuild) "com.xinsu.manager.pr" else "com.xinsu.manager"
-val defaultManagerName = if (isPrBuild) "Xinsu PR" else "Xinsu"
+val defaultManagerName = if (isPrBuild) "XinSu PR" else "XinSu"
 val managerPackageName = project.findProperty("KSU_PACKAGE_NAME")?.toString() ?: defaultManagerPackageName
 val managerName = project.findProperty("KSU_NAME")?.toString() ?: defaultManagerName
 
