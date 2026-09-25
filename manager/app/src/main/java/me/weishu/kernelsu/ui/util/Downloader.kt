@@ -60,7 +60,8 @@ fun checkNewVersion(): LatestVersionInfo {
                         continue
                     }
 
-                    val regex = Regex("v(.+?)_(\\d+)-")
+                    // 兼容 XinSu_3.3.1_32602-release.apk 与 Xinsu_v3.3.0_32601-release.apk 两种命名
+                    val regex = Regex("v?(\\d+\\.\\d+\\.\\d+)_(\\d+)-")
                     val matchResult = regex.find(name) ?: continue
                     matchResult.groupValues[1]
                     val versionCode = matchResult.groupValues[2].toInt()

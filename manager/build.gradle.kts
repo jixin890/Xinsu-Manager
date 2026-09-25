@@ -12,7 +12,7 @@ extra["androidBuildToolsVersion"] = "37.0.0"
 extra["androidCompileNdkVersion"] = libs.versions.ndk.get()
 extra["androidSourceCompatibility"] = JavaVersion.VERSION_21
 extra["androidTargetCompatibility"] = JavaVersion.VERSION_21
-// Xinsu 基于 KernelSU v3.3.0：版本号与最新 ksu 对齐
-// versionCode 32601 = 30000 + 2601（v3.3.0 的提交数），与内核版本匹配避免误报版本不匹配
-extra["managerVersionCode"] = 32601
-extra["managerVersionName"] = "3.3.0"
+// Xinsu 基于 KernelSU v3.3.0：内核版本对齐 v3.3.0，管理器自身版本独立递增以便自更新
+// 内核/管理器兼容性由 Natives.requireNewKernel()（内核最低版本 + UAPI）判断，与 managerVersionCode 无关
+extra["managerVersionCode"] = 32602
+extra["managerVersionName"] = "3.3.1"
