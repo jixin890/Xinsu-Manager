@@ -39,7 +39,7 @@ suspend fun download(
 fun checkNewVersion(): LatestVersionInfo {
     if (!isNetworkAvailable(ksuApp)) return LatestVersionInfo()
     // Xinsu 自更新通道：脱离 KernelSU 云端，改为从 Xinsu-Manager 仓库的 GitHub Release 检查更新
-    val url = "https://api.github.com/repos/YOUR_GITHUB_USERNAME/Xinsu-Manager/releases/latest"
+    val url = "https://api.github.com/repos/jixin890/Xinsu-Manager/releases/latest"
     // default null value if failed
     val defaultValue = LatestVersionInfo()
     runCatching {
