@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Xinsu 图标：粗体闪电 + 立体投影 + 星芒点缀（均位于自适应图标安全区内） -->
+
+    <!-- 后方投影（错位 +2,+2，营造立体感） -->
+    <path
+        android:fillColor="@color/ic_launcher_echo"
+        android:strokeColor="@color/ic_launcher_echo"
+        android:strokeWidth="3"
+        android:strokeLineJoin="round"
+        android:pathData="M64,25 L38,57 L51,57 L44,83 L72,46 L58,46 Z" />
+
+    <!-- 主闪电 -->
+    <path
+        android:fillColor="@color/ic_launcher_foreground"
+        android:strokeColor="@color/ic_launcher_foreground"
+        android:strokeWidth="3"
+        android:strokeLineJoin="round"
+        android:pathData="M62,23 L36,55 L49,55 L42,85 L70,44 L56,44 Z" />
+
+    <!-- 右下星芒点缀 -->
+    <path
+        android:fillColor="@color/ic_launcher_spark"
+        android:pathData="M77,63 L79.5,68.5 L85,71 L79.5,73.5 L77,79 L74.5,73.5 L69,71 L74.5,68.5 Z" />
+</vector>
